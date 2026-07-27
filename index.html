@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beast of Bermuda Map</title>
+    <title>Beast of Bermuda Interactive Map</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -14,7 +14,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            background: #111; /* Dark background around the map */
+            background: #111;
         }
     </style>
 </head>
@@ -36,13 +36,37 @@
         });
 
         var bounds = [[0, 0], [mapHeight, mapWidth]];
-
         var image = L.imageOverlay('map.png', bounds).addTo(map);
-
         map.fitBounds(bounds);
+        
+        var shrines = [
+            { name: "Major Water Survival Shrine", coords: [780, 2145], color: "blue", type: "Water" },
+            { name: "Major Water Mobility Shrine", coords: [961, 1481], color: "green", type: "Water" },
+            { name: "Major Water Power Shrine",    coords: [605, 1216], color: "red", type: "Water" },
+            
+            { name: "Major Land Survival Shrine", coords: [1612, 1087], color: "blue", type: "Land" },
+            { name: "Major Land Mobility Shrine", coords: [743, 1321],  color: "green", type: "Land" },
+            { name: "Major Land Power Shrine",    coords: [1047, 2344], color: "red", type: "Land" }
+        ];
+
+        var shrineLayerGroup = L.layerGroup().addTo(map);
+
+        shrines.forEach(function(shrine) {
+            var marker = L.circleMarker(shrine.coords, {
+                radius: 12,
+                color: '#fff',          // Weißer Rand
+                weight: 2,
+                fillColor: shrine.color, // Blau, Grün oder Rot
+                fillOpacity: 0.9
+            }).bindPopup("<b>" + shrine.name + "</b><br>Type: Major " + shrine.type + " Shrine");
+
+            shrineLayerGroup.addLayer(marker);
+        });
 
         map.on('click', function(e) {
-            console.log("Clicked coordinates: [Y: " + Math.round(e.latlng.lat) + ", X: " + Math.round(e.latlng.lng) + "]");
+            var y = Math.round(e.latlng.lat);
+            var x = Math.round(e.latlng.lng);
+            console.log("Clicked coordinates: [Y: " + y + ", X: " + x + "]");
         });
     </script>
 </body>
