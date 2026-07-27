@@ -22,10 +22,9 @@
     }
 
     .shrine-marker:hover {
-        transform: scale(1.15);
-        filter: drop-shadow(0 0 8px currentColor);
+        transform: scale(1.35);
     }
-</style>
+    </style>
 </head>
 <body>
 
@@ -48,35 +47,37 @@
         var image = L.imageOverlay('map.png', bounds).addTo(map);
         map.fitBounds(bounds);
 
-        var powerIcon = L.icon({
-            iconUrl: 'MajorPower.svg',
-            iconSize: [36, 36],
-            iconAnchor: [18, 18],
-            popupAnchor: [0, -18],
-            className: 'shrine-marker'
-        });
-
-        var mobilityIcon = L.icon({
-            iconUrl: 'MajorMobility.svg',
-            iconSize: [36, 36],
-            iconAnchor: [18, 18],
-            popupAnchor: [0, -18],
-            className: 'shrine-marker'
-        });
-
         var survivalIcon = L.icon({
             iconUrl: 'MajorSurvival.svg',
             iconSize: [36, 36],
             iconAnchor: [18, 18],
             popupAnchor: [0, -18],
-            className: 'shrine-marker'
+            className: 'shrine-marker',
+            // Adds a drop-shadow glow matching the survival color on hover/default
+            html: '' 
         });
 
+        function createShrineIcon(url, glowColor) {
+            return L.divIcon({
+                className: 'shrine-marker',
+                html: '<img src="' + url + '" style="width: 36px; height: 36px; display: block; transition: filter 0.2s, transform 0.2s;" onmouseover="this.style.filter=\'drop-shadow(0 0 10px ' + glowColor + ')\'; this.style.transform=\'scale(1.15)\';" onmouseout="this.style.filter=\'none\'; this.style.transform=\'scale(1)\';">',
+                iconSize: [36, 36],
+                iconAnchor: [18, 18],
+                popupAnchor: [0, -18]
+            });
+        }
+
+        var survivalIcon = createShrineIcon('MajorSurvival.svg', '#00ff00');
+        var powerIcon    = createShrineIcon('MajorPower.svg', '#ff0000');
+        var mobilityIcon = createShrineIcon('MajorMobility.svg', '#00ccff');
+        
         var shrines = [
+            // Major Water Shrines
             { name: "Major Water Survival Shrine", coords: [780, 2145], type: "Water", icon: survivalIcon },
             { name: "Major Water Mobility Shrine", coords: [961, 1481], type: "Water", icon: mobilityIcon },
             { name: "Major Water Power Shrine",    coords: [605, 1216], type: "Water", icon: powerIcon },
             
+            // Major Land Shrines
             { name: "Major Land Survival Shrine", coords: [1612, 1087], type: "Land", icon: survivalIcon },
             { name: "Major Land Mobility Shrine", coords: [743, 1321],  type: "Land", icon: mobilityIcon },
             { name: "Major Land Power Shrine",    coords: [1047, 2344], type: "Land", icon: powerIcon }
