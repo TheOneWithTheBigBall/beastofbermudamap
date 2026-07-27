@@ -38,6 +38,14 @@
         transform: scale(1.35);
         filter: drop-shadow(0 0 12px #00aaff);
     }
+
+    .shrine-marker, .water-marker {
+        transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        opacity: 0.7;
+    }
+    .shrine-marker:hover, .water-marker:hover {
+        opacity: 1.0;
+    }
     </style>
 </head>
 <body>
@@ -71,10 +79,14 @@
             });
         }
 
-        var survivalIcon = createIcon('SurvivalShrine.svg', 'shrine-marker shrine-survival', 36);
-        var mobilityIcon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
-        var powerIcon    = createIcon('PowerShrine.svg',    'shrine-marker shrine-power',    36);
+        var majorSurvivalIcon = createIcon('MajorSurvival.svg', 'shrine-marker shrine-survival', 42);
+        var majorMobilityIcon = createIcon('MajorMobility.svg', 'shrine-marker shrine-mobility', 42);
+        var majorPowerIcon    = createIcon('MajorPower.svg',    'shrine-marker shrine-power',    42);
 
+        var minorSurvivalicon = createIcon('SurvivalShrine.svg', 'shrine-marker shrine-survival', 36);
+        var minorMobilityicon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
+        var minorPowerIcon    = createIcon('PowerShrine.svg',    'shrine-marker shrine-power',    36);
+        
         var waterIcon = createIcon('Waterdrop.svg', 'water-marker water-hover', 30);
 
         var shrines = [
@@ -119,7 +131,6 @@
             { name: "Water Spot", coords: [753, 2352] },
             { name: "Water Spot", coords: [593, 1924], note: "Inside cave, entrance on side of mountain" },
             { name: "Water Spot", coords: [677, 1887], note: "Always dirty" },
-            { name: "Water Spot", coords: [597, 1819] },
             { name: "Water Spot", coords: [431, 1842] },
             { name: "Water Spot", coords: [601, 1815] },
             { name: "Water Spot", coords: [560, 1729] },
