@@ -17,34 +17,28 @@
         background: #111;
     }
 
-    .shrine-marker, .water-marker {
-        transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
-    }
-
-    /* Glow colors on hover */
-    .shrine-survival:hover {
-        transform: scale(1.35);
-        filter: drop-shadow(0 0 12px #00ccff);
-    }
-    .shrine-mobility:hover {
-        transform: scale(1.35);
-        filter: drop-shadow(0 0 12px #00ff00);
-    }
-    .shrine-power:hover {
-        transform: scale(1.35);
-        filter: drop-shadow(0 0 12px #ff0000);
-    }
-    .water-hover:hover {
-        transform: scale(1.35);
-        filter: drop-shadow(0 0 12px #00aaff);
-    }
-
+    /* Base styles and 70% opacity */
     .shrine-marker, .water-marker {
         transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
         opacity: 0.7;
     }
+    
     .shrine-marker:hover, .water-marker:hover {
         opacity: 1.0;
+        transform: scale(1.35);
+    }
+
+    .shrine-survival:hover {
+        filter: drop-shadow(0 0 12px #00ccff);
+    }
+    .shrine-mobility:hover {
+        filter: drop-shadow(0 0 12px #00ff00);
+    }
+    .shrine-power:hover {
+        filter: drop-shadow(0 0 12px #ff0000);
+    }
+    .water-hover:hover {
+        filter: drop-shadow(0 0 12px #00aaff);
     }
     </style>
 </head>
@@ -79,46 +73,52 @@
             });
         }
 
+        // Major Shrines (Bigger size: 42px, using Major SVGs)
         var majorSurvivalIcon = createIcon('MajorSurvival.svg', 'shrine-marker shrine-survival', 42);
         var majorMobilityIcon = createIcon('MajorMobility.svg', 'shrine-marker shrine-mobility', 42);
         var majorPowerIcon    = createIcon('MajorPower.svg',    'shrine-marker shrine-power',    42);
 
-        var minorSurvivalicon = createIcon('SurvivalShrine.svg', 'shrine-marker shrine-survival', 36);
-        var minorMobilityicon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
+        // Minor Shrines (Standard size: 36px, using normal SVGs)
+        var minorSurvivalIcon = createIcon('SurvivalShrine.svg', 'shrine-marker shrine-survival', 36);
+        var minorMobilityIcon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
         var minorPowerIcon    = createIcon('PowerShrine.svg',    'shrine-marker shrine-power',    36);
         
         var waterIcon = createIcon('Waterdrop.svg', 'water-marker water-hover', 30);
 
         var shrines = [
-            { name: "Major Water Survival Shrine", coords: [780, 2145], icon: survivalIcon },
-            { name: "Major Water Mobility Shrine", coords: [961, 1481], icon: mobilityIcon },
-            { name: "Major Water Power Shrine",    coords: [605, 1216], icon: powerIcon },
-            { name: "Major Land Survival Shrine", coords: [1612, 1087], icon: survivalIcon },
-            { name: "Major Land Mobility Shrine", coords: [743, 1321],  icon: mobilityIcon },
-            { name: "Major Land Power Shrine",    coords: [1047, 2344], icon: powerIcon },
+            // Major Shrines
+            { name: "Major Water Survival Shrine", coords: [780, 2145], icon: majorSurvivalIcon },
+            { name: "Major Water Mobility Shrine", coords: [961, 1481], icon: majorMobilityIcon },
+            { name: "Major Water Power Shrine",    coords: [605, 1216], icon: majorPowerIcon },
+            { name: "Major Land Survival Shrine", coords: [1612, 1087], icon: majorSurvivalIcon },
+            { name: "Major Land Mobility Shrine", coords: [743, 1321],  icon: majorMobilityIcon },
+            { name: "Major Land Power Shrine",    coords: [1047, 2344], icon: majorPowerIcon },
 
-            { name: "Minor Mobility Shrine", coords: [888, 2460], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [715, 2462], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [409, 2543], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [584, 1672], icon: mobilityIcon, note: "Under the pond" },
-            { name: "Minor Mobility Shrine", coords: [670, 1892], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [1039, 967], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [995, 1054], icon: mobilityIcon },
-            { name: "Minor Mobility Shrine", coords: [1989, 1770], icon: mobilityIcon },
+            // Minor Mobility Shrines
+            { name: "Minor Mobility Shrine", coords: [888, 2460], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [715, 2462], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [409, 2543], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [584, 1672], icon: minorMobilityIcon, note: "Under the pond" },
+            { name: "Minor Mobility Shrine", coords: [670, 1892], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [1039, 967], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [995, 1054], icon: minorMobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [1989, 1770], icon: minorMobilityIcon },
 
-            { name: "Minor Survival Shrine", coords: [424, 2208], icon: survivalIcon },
-            { name: "Minor Survival Shrine", coords: [425, 1794], icon: survivalIcon },
-            { name: "Minor Survival Shrine", coords: [429, 1640], icon: survivalIcon },
-            { name: "Minor Survival Shrine", coords: [701, 1757], icon: survivalIcon },
-            { name: "Minor Survival Shrine", coords: [1280, 1888], icon: survivalIcon },
-            { name: "Minor Survival Shrine", coords: [2013, 1583], icon: survivalIcon },
+            // Minor Survival Shrines
+            { name: "Minor Survival Shrine", coords: [424, 2208], icon: minorSurvivalIcon },
+            { name: "Minor Survival Shrine", coords: [425, 1794], icon: minorSurvivalIcon },
+            { name: "Minor Survival Shrine", coords: [429, 1640], icon: minorSurvivalIcon },
+            { name: "Minor Survival Shrine", coords: [701, 1757], icon: minorSurvivalIcon },
+            { name: "Minor Survival Shrine", coords: [1280, 1888], icon: minorSurvivalIcon },
+            { name: "Minor Survival Shrine", coords: [2013, 1583], icon: minorSurvivalIcon },
 
-            { name: "Minor Power Shrine", coords: [428, 2368], icon: powerIcon },
-            { name: "Minor Power Shrine", coords: [711, 2361], icon: powerIcon },
-            { name: "Minor Power Shrine", coords: [871, 1252], icon: powerIcon },
-            { name: "Minor Power Shrine", coords: [1076, 1450], icon: powerIcon },
-            { name: "Minor Power Shrine", coords: [1602, 1366], icon: powerIcon },
-            { name: "Minor Power Shrine", coords: [1710, 2033], icon: powerIcon }
+            // Minor Power Shrines
+            { name: "Minor Power Shrine", coords: [428, 2368], icon: minorPowerIcon },
+            { name: "Minor Power Shrine", coords: [711, 2361], icon: minorPowerIcon },
+            { name: "Minor Power Shrine", coords: [871, 1252], icon: minorPowerIcon },
+            { name: "Minor Power Shrine", coords: [1076, 1450], icon: minorPowerIcon },
+            { name: "Minor Power Shrine", coords: [1602, 1366], icon: minorPowerIcon },
+            { name: "Minor Power Shrine", coords: [1710, 2033], icon: minorPowerIcon }
         ];
 
         var waterSpots = [
