@@ -17,12 +17,11 @@
         background: #111;
     }
 
-    /* Base style for all shrine markers */
-    .shrine-marker {
+    .shrine-marker, .water-marker {
         transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
     }
 
-    /* Specific glow colors on hover */
+    /* Glow colors on hover */
     .shrine-survival:hover {
         transform: scale(1.35);
         filter: drop-shadow(0 0 12px #00ccff);
@@ -34,6 +33,10 @@
     .shrine-power:hover {
         transform: scale(1.35);
         filter: drop-shadow(0 0 12px #ff0000);
+    }
+    .water-hover:hover {
+        transform: scale(1.35);
+        filter: drop-shadow(0 0 12px #00aaff);
     }
     </style>
 </head>
@@ -58,39 +61,113 @@
         var image = L.imageOverlay('map.png', bounds).addTo(map);
         map.fitBounds(bounds);
 
-        function createShrineIcon(url, cssClass) {
+        function createIcon(url, cssClass, size) {
             return L.divIcon({
-                className: 'shrine-marker ' + cssClass,
-                html: '<img src="' + url + '" style="width: 36px; height: 36px; display: block;">',
-                iconSize: [36, 36],
-                iconAnchor: [18, 18],
-                popupAnchor: [0, -18]
+                className: cssClass,
+                html: '<img src="' + url + '" style="width: ' + size + 'px; height: ' + size + 'px; display: block;">',
+                iconSize: [size, size],
+                iconAnchor: [size/2, size/2],
+                popupAnchor: [0, -size/2]
             });
         }
 
-        var survivalIcon = createShrineIcon('MajorSurvival.svg', 'shrine-survival');
-        var mobilityIcon = createShrineIcon('MajorMobility.svg', 'shrine-mobility');
-        var powerIcon    = createShrineIcon('MajorPower.svg',    'shrine-power');
-        
+        var survivalIcon = createIcon('SurvivalShrine.svg', 'shrine-marker shrine-survival', 36);
+        var mobilityIcon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
+        var powerIcon    = createIcon('PowerShrine.svg',    'shrine-marker shrine-power',    36);
+
+        var waterIcon = createIcon('Waterdrop.svg', 'water-marker water-hover', 30);
+
         var shrines = [
-            // Major Water Shrines
-            { name: "Major Water Survival Shrine", coords: [780, 2145], type: "Water", icon: survivalIcon },
-            { name: "Major Water Mobility Shrine", coords: [961, 1481], type: "Water", icon: mobilityIcon },
-            { name: "Major Water Power Shrine",    coords: [605, 1216], type: "Water", icon: powerIcon },
-            
-            // Major Land Shrines
-            { name: "Major Land Survival Shrine", coords: [1612, 1087], type: "Land", icon: survivalIcon },
-            { name: "Major Land Mobility Shrine", coords: [743, 1321],  type: "Land", icon: mobilityIcon },
-            { name: "Major Land Power Shrine",    coords: [1047, 2344], type: "Land", icon: powerIcon }
+            { name: "Major Water Survival Shrine", coords: [780, 2145], icon: survivalIcon },
+            { name: "Major Water Mobility Shrine", coords: [961, 1481], icon: mobilityIcon },
+            { name: "Major Water Power Shrine",    coords: [605, 1216], icon: powerIcon },
+            { name: "Major Land Survival Shrine", coords: [1612, 1087], icon: survivalIcon },
+            { name: "Major Land Mobility Shrine", coords: [743, 1321],  icon: mobilityIcon },
+            { name: "Major Land Power Shrine",    coords: [1047, 2344], icon: powerIcon },
+
+            { name: "Minor Mobility Shrine", coords: [888, 2460], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [715, 2462], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [409, 2543], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [584, 1672], icon: mobilityIcon, note: "Under the pond" },
+            { name: "Minor Mobility Shrine", coords: [670, 1892], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [1039, 967], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [995, 1054], icon: mobilityIcon },
+            { name: "Minor Mobility Shrine", coords: [1989, 1770], icon: mobilityIcon },
+
+            { name: "Minor Survival Shrine", coords: [424, 2208], icon: survivalIcon },
+            { name: "Minor Survival Shrine", coords: [425, 1794], icon: survivalIcon },
+            { name: "Minor Survival Shrine", coords: [429, 1640], icon: survivalIcon },
+            { name: "Minor Survival Shrine", coords: [701, 1757], icon: survivalIcon },
+            { name: "Minor Survival Shrine", coords: [1280, 1888], icon: survivalIcon },
+            { name: "Minor Survival Shrine", coords: [2013, 1583], icon: survivalIcon },
+
+            { name: "Minor Power Shrine", coords: [428, 2368], icon: powerIcon },
+            { name: "Minor Power Shrine", coords: [711, 2361], icon: powerIcon },
+            { name: "Minor Power Shrine", coords: [871, 1252], icon: powerIcon },
+            { name: "Minor Power Shrine", coords: [1076, 1450], icon: powerIcon },
+            { name: "Minor Power Shrine", coords: [1602, 1366], icon: powerIcon },
+            { name: "Minor Power Shrine", coords: [1710, 2033], icon: powerIcon }
+        ];
+
+        var waterSpots = [
+            { name: "Water Spot", coords: [213, 2313] },
+            { name: "Water Spot", coords: [435, 2377], note: "Bugged, undrinkable but counts for Water source trial" },
+            { name: "Water Spot", coords: [399, 2306] },
+            { name: "Water Spot", coords: [600, 2486] },
+            { name: "Water Spot", coords: [516, 2177] },
+            { name: "Water Spot", coords: [552, 2363] },
+            { name: "Water Spot", coords: [753, 2352] },
+            { name: "Water Spot", coords: [593, 1924], note: "Inside cave, entrance on side of mountain" },
+            { name: "Water Spot", coords: [677, 1887], note: "Always dirty" },
+            { name: "Water Spot", coords: [597, 1819] },
+            { name: "Water Spot", coords: [431, 1842] },
+            { name: "Water Spot", coords: [601, 1815] },
+            { name: "Water Spot", coords: [560, 1729] },
+            { name: "Water Spot", coords: [550, 1627], note: "Always dirty" },
+            { name: "Water Spot", coords: [805, 1426] },
+            { name: "Water Spot", coords: [787, 1387] },
+            { name: "Water Spot", coords: [816, 1267] },
+            { name: "Water Spot", coords: [925, 1215], note: "Inside the cave" },
+            { name: "Water Spot", coords: [914, 996] },
+            { name: "Water Spot", coords: [1079, 984] },
+            { name: "Water Spot", coords: [1062, 1628] },
+            { name: "Water Spot", coords: [1119, 1596] },
+            { name: "Water Spot", coords: [1311, 1624], note: "Bugged, undrinkable but counts for Water source trial" },
+            { name: "Water Spot", coords: [1351, 1969] },
+            { name: "Water Spot", coords: [1176, 2091] },
+            { name: "Water Spot", coords: [1581, 1811] },
+            { name: "Water Spot", coords: [1603, 1522], note: "Inside the cave" },
+            { name: "Water Spot", coords: [1642, 1536] },
+            { name: "Water Spot", coords: [1871, 1500] },
+            { name: "Water Spot", coords: [1325, 890] },
+            { name: "Water Spot", coords: [1979, 1256] },
+            { name: "Water Spot", coords: [2190, 1575] },
+            { name: "Water Spot", coords: [2022, 1882] },
+            { name: "Water Spot", coords: [1864, 2083] },
+            { name: "Water Spot", coords: [1800, 2355] },
+            { name: "Water Spot", coords: [1426, 2355] },
+            { name: "Water Spot", coords: [1357, 2336] }
         ];
 
         var shrineLayerGroup = L.layerGroup().addTo(map);
+        var waterLayerGroup = L.layerGroup().addTo(map);
 
         shrines.forEach(function(shrine) {
-            var marker = L.marker(shrine.coords, { icon: shrine.icon })
-                .bindPopup("<b>" + shrine.name + "</b>");
-
+            var content = "<b>" + shrine.name + "</b>";
+            if (shrine.note) {
+                content += "<br><i>" + shrine.note + "</i>";
+            }
+            var marker = L.marker(shrine.coords, { icon: shrine.icon }).bindPopup(content);
             shrineLayerGroup.addLayer(marker);
+        });
+        
+        waterSpots.forEach(function(spot) {
+            var content = "<b>" + spot.name + "</b>";
+            if (spot.note) {
+                content += "<br><i>" + spot.note + "</i>";
+            }
+            var marker = L.marker(spot.coords, { icon: waterIcon }).bindPopup(content);
+            waterLayerGroup.addLayer(marker);
         });
 
         map.on('click', function(e) {
