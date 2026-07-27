@@ -169,6 +169,12 @@
                 content += "<br><i>" + shrine.note + "</i>";
             }
             var marker = L.marker(shrine.coords, { icon: shrine.icon }).bindPopup(content);
+            
+            // Log shrine coordinates to console on click
+            marker.on('click', function() {
+                console.log("Clicked Shrine (" + shrine.name + "): [Y: " + shrine.coords[0] + ", X: " + shrine.coords[1] + "]");
+            });
+
             shrineLayerGroup.addLayer(marker);
         });
         
@@ -178,6 +184,12 @@
                 content += "<br><i>" + spot.note + "</i>";
             }
             var marker = L.marker(spot.coords, { icon: waterIcon }).bindPopup(content);
+            
+            // Log water spot coordinates to console on click
+            marker.on('click', function() {
+                console.log("Clicked Water Spot: [Y: " + spot.coords[0] + ", X: " + spot.coords[1] + "]");
+            });
+
             waterLayerGroup.addLayer(marker);
         });
 
