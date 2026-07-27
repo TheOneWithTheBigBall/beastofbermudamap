@@ -17,12 +17,23 @@
         background: #111;
     }
 
-    .leaflet-marker-icon {
-        transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
+    /* Base style for all shrine markers */
+    .shrine-marker {
+        transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
     }
 
-    .shrine-marker:hover {
+    /* Specific glow colors on hover */
+    .shrine-survival:hover {
         transform: scale(1.35);
+        filter: drop-shadow(0 0 12px #00ff00);
+    }
+    .shrine-mobility:hover {
+        transform: scale(1.35);
+        filter: drop-shadow(0 0 12px #00ccff);
+    }
+    .shrine-power:hover {
+        transform: scale(1.35);
+        filter: drop-shadow(0 0 12px #ff0000);
     }
     </style>
 </head>
@@ -47,29 +58,19 @@
         var image = L.imageOverlay('map.png', bounds).addTo(map);
         map.fitBounds(bounds);
 
-        var survivalIcon = L.icon({
-            iconUrl: 'MajorSurvival.svg',
-            iconSize: [36, 36],
-            iconAnchor: [18, 18],
-            popupAnchor: [0, -18],
-            className: 'shrine-marker',
-            // Adds a drop-shadow glow matching the survival color on hover/default
-            html: '' 
-        });
-
-        function createShrineIcon(url, glowColor) {
+        function createShrineIcon(url, cssClass) {
             return L.divIcon({
-                className: 'shrine-marker',
-                html: '<img src="' + url + '" style="width: 36px; height: 36px; display: block; transition: filter 0.2s, transform 0.2s;" onmouseover="this.style.filter=\'drop-shadow(0 0 10px ' + glowColor + ')\'; this.style.transform=\'scale(1.15)\';" onmouseout="this.style.filter=\'none\'; this.style.transform=\'scale(1)\';">',
+                className: 'shrine-marker ' + cssClass,
+                html: '<img src="' + url + '" style="width: 36px; height: 36px; display: block;">',
                 iconSize: [36, 36],
                 iconAnchor: [18, 18],
                 popupAnchor: [0, -18]
             });
         }
 
-        var survivalIcon = createShrineIcon('MajorSurvival.svg', '#00ff00');
-        var mobilityIcon = createShrineIcon('MajorMobility.svg', '#00ccff');
-        var powerIcon    = createShrineIcon('MajorPower.svg',    '#ff0000');
+        var survivalIcon = createShrineIcon('MajorSurvival.svg', 'shrine-survival');
+        var mobilityIcon = createShrineIcon('MajorMobility.svg', 'shrine-mobility');
+        var powerIcon    = createShrineIcon('MajorPower.svg',    'shrine-power');
         
         var shrines = [
             // Major Water Shrines
