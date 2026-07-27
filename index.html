@@ -40,6 +40,10 @@
         var image = L.imageOverlay('map.png', bounds).addTo(map);
 
         map.fitBounds(bounds);
+
+        map.on('click', function(e) {
+            console.log("Clicked coordinates: [Y: " + Math.round(e.latlng.lat) + ", X: " + Math.round(e.latlng.lng) + "]");
+        });
     </script>
 </body>
 </html>
