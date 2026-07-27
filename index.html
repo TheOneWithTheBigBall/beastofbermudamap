@@ -9,14 +9,23 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: #111;
-        }
-    </style>
+    html, body, #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #111;
+    }
+
+    .leaflet-marker-icon {
+        transition: filter 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .shrine-marker:hover {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+</style>
 </head>
 <body>
 
@@ -43,21 +52,24 @@
             iconUrl: 'MajorPower.svg',
             iconSize: [36, 36],
             iconAnchor: [18, 18],
-            popupAnchor: [0, -18]
+            popupAnchor: [0, -18],
+            className: 'shrine-marker'
         });
 
         var mobilityIcon = L.icon({
             iconUrl: 'MajorMobility.svg',
             iconSize: [36, 36],
             iconAnchor: [18, 18],
-            popupAnchor: [0, -18]
+            popupAnchor: [0, -18],
+            className: 'shrine-marker'
         });
 
         var survivalIcon = L.icon({
             iconUrl: 'MajorSurvival.svg',
             iconSize: [36, 36],
             iconAnchor: [18, 18],
-            popupAnchor: [0, -18]
+            popupAnchor: [0, -18],
+            className: 'shrine-marker'
         });
 
         var shrines = [
@@ -74,7 +86,7 @@
 
         shrines.forEach(function(shrine) {
             var marker = L.marker(shrine.coords, { icon: shrine.icon })
-                .bindPopup("<b>" + shrine.name + "</b><br>Type: Major " + shrine.type + " Shrine");
+                .bindPopup("<b>" + shrine.name + "</b>");
 
             shrineLayerGroup.addLayer(marker);
         });
