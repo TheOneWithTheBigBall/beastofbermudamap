@@ -38,27 +38,43 @@
         var bounds = [[0, 0], [mapHeight, mapWidth]];
         var image = L.imageOverlay('map.png', bounds).addTo(map);
         map.fitBounds(bounds);
-        
+
+        var powerIcon = L.icon({
+            iconUrl: 'MajorPower.svg',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+
+        var mobilityIcon = L.icon({
+            iconUrl: 'MajorMobility.svg',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+
+        var survivalIcon = L.icon({
+            iconUrl: 'MajorSurvival.svg',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        });
+
         var shrines = [
-            { name: "Major Water Survival Shrine", coords: [780, 2145], color: "blue", type: "Water" },
-            { name: "Major Water Mobility Shrine", coords: [961, 1481], color: "green", type: "Water" },
-            { name: "Major Water Power Shrine",    coords: [605, 1216], color: "red", type: "Water" },
+            { name: "Major Water Survival Shrine", coords: [780, 2145], type: "Water", icon: survivalIcon },
+            { name: "Major Water Mobility Shrine", coords: [961, 1481], type: "Water", icon: mobilityIcon },
+            { name: "Major Water Power Shrine",    coords: [605, 1216], type: "Water", icon: powerIcon },
             
-            { name: "Major Land Survival Shrine", coords: [1612, 1087], color: "blue", type: "Land" },
-            { name: "Major Land Mobility Shrine", coords: [743, 1321],  color: "green", type: "Land" },
-            { name: "Major Land Power Shrine",    coords: [1047, 2344], color: "red", type: "Land" }
+            { name: "Major Land Survival Shrine", coords: [1612, 1087], type: "Land", icon: survivalIcon },
+            { name: "Major Land Mobility Shrine", coords: [743, 1321],  type: "Land", icon: mobilityIcon },
+            { name: "Major Land Power Shrine",    coords: [1047, 2344], type: "Land", icon: powerIcon }
         ];
 
         var shrineLayerGroup = L.layerGroup().addTo(map);
 
         shrines.forEach(function(shrine) {
-            var marker = L.circleMarker(shrine.coords, {
-                radius: 12,
-                color: '#fff',          // Weißer Rand
-                weight: 2,
-                fillColor: shrine.color, // Blau, Grün oder Rot
-                fillOpacity: 0.9
-            }).bindPopup("<b>" + shrine.name + "</b><br>Type: Major " + shrine.type + " Shrine");
+            var marker = L.marker(shrine.coords, { icon: shrine.icon })
+                .bindPopup("<b>" + shrine.name + "</b><br>Type: Major " + shrine.type + " Shrine");
 
             shrineLayerGroup.addLayer(marker);
         });
