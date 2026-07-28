@@ -83,7 +83,9 @@
         var minorMobilityIcon = createIcon('MobilityShrine.svg', 'shrine-marker shrine-mobility', 36);
         var minorPowerIcon    = createIcon('PowerShrine.svg',    'shrine-marker shrine-power',    36);
 
-        var waterIcon = createIcon('Waterdrop.svg', 'water-marker water-hover', 30);
+        // Water Icons (Active & Visited)
+        var waterIcon     = createIcon('Waterdrop.svg', 'water-marker water-hover', 30);
+        var waterDoneIcon = createIcon('waterdone.svg', 'water-marker water-hover', 30);
 
         var shrines = [
             // Major Shrines
@@ -216,9 +218,18 @@
             }
             var marker = L.marker(spot.coords, { icon: waterIcon }).bindPopup(content);
 
-            // Log water spot coordinates to console on click
+            // Custom state tracking for visited water spots
+            marker.isVisited = false;
+
+            // Log water spot coordinates & toggle icon on click
             marker.on('click', function() {
                 console.log("Clicked Water Spot: [Y: " + spot.coords[0] + ", X: " + spot.coords[1] + "]");
+
+                // Toggle state
+                marker.isVisited = !marker.isVisited;
+
+                // Update marker icon dynamically
+                marker.setIcon(marker.isVisited ? waterDoneIcon : waterIcon);
             });
 
             waterLayerGroup.addLayer(marker);
